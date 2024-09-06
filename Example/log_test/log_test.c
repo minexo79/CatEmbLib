@@ -3,10 +3,12 @@
 
 int main(void)
 {
-    log_message(LOG_INFO, __FILE__, __LINE__, "Hello, World!");
-    log_message(LOG_WARN, __FILE__, __LINE__, "Hello, World!");
-    log_message(LOG_ERROR, __FILE__, __LINE__, "Hello, World!");
-    log_message(LOG_DEBUG, __FILE__, __LINE__, "Hello, World!");
+    log_level_change(LOG_DEBUG);
+
+    LOG(LOG_INFO, "This is Info Message!");
+    LOG(LOG_WARN, "This is Warning Message!");
+    LOG(LOG_ERROR, "This is Error Message!");
+    LOG(LOG_DEBUG, "This is Debug Message!");
 
     return 0;
 }

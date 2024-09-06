@@ -1,21 +1,32 @@
 #include "cel_log.h"
 
-static uint32_t get_timestamp_millseconds() 
+static int start_t = 0;
+static LogLevel max_log_level = LOG_INFO;
+
+static double get_timestamp_millseconds(clock_t clock) 
 {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-    return 0;
-#elif (defined(__unix__) || defined(__unix))
-    struct timespec ts;
-    clock_gettime(CLOCK_REALTIME, &ts);
-    return (uint64_t)ts.tv_sec * 1000000000 + ts.tv_nsec;
+// Windows / Linux
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__) || defined(__unix__) || defined(__unix)
+    start_t = (start_t == 0) ? clock : start_t;
+    return (double)(clock - start_t) / CLOCKS_PER_SEC;
+// STM32
 #else
-    return HAL_GetTick() * 1000;
+    return HAL_GetTick() / 1000;
 #endif
+}
+
+void log_level_change(LogLevel level)
+{
+    max_log_level = level;
 }
 
 void log_message(LogLevel level, const char *file, int line, const char *message) 
 {
     const char *level_str;
+    clock_t _clock = clock();
+
+    if (level > max_log_level)
+        return;
 
     switch (level) 
     {
@@ -36,6 +47,6 @@ void log_message(LogLevel level, const char *file, int line, const char *message
             break;
     }
 
-    uint64_t timestamp = get_timestamp_millseconds();
-    printf("%0.3f %s\t%s:%d: %s\n", timestamp / 1000.0, level_str, file, line, message);
+    double timestamp = get_timestamp_millseconds(_clock);
+    printf("%.6f %s\t%s:%d: %s\n", timestamp, level_str, file, line, message);
 }

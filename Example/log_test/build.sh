@@ -1,0 +1,1 @@
+gcc -Wall -O0 -g ./log_test.c ../../Common/Src/cel_log.c -o log_test -I ../../Common/Inc/
