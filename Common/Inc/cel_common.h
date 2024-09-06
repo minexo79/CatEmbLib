@@ -58,10 +58,4 @@
 
 #define array_size(x) (sizeof(x) / sizeof((x)[0]))
 
-/**
- * ==================== Other Lib ==================== 
- */
-
-#include "cel_type_convert.h"
-
 #endif /* CEL_COMMON_H_ */
