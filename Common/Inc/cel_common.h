@@ -9,8 +9,12 @@
 #include <stdint.h>
 #include <math.h>
 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__) || defined(__unix__) || defined(__unix)
+#define HASOS
+#endif
+
 // Windows / Linux
-#if defined(__unix__) || defined(__unix) || defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#if defined(HASOS)
 #include <time.h>
 // STM32
 #else

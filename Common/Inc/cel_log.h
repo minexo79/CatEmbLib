@@ -7,7 +7,7 @@
  * @brief 
  * Log level Enum
  */
-typedef enum 
+typedef enum LogLevel
 {
     LOG_ERROR = 0,
     LOG_WARN,
