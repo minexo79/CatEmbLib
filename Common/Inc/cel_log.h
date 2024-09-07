@@ -9,11 +9,18 @@
  */
 typedef enum 
 {
-    LOG_INFO,
+    LOG_ERROR = 0,
     LOG_WARN,
-    LOG_ERROR,
+    LOG_INFO,
     LOG_DEBUG,
 } LogLevel;
+
+/**
+ * @brief 
+ * Change The Max Log level Be Printout
+ * @param level The log level
+ */
+void log_level_change(LogLevel level);
 
 /**
  * @brief 

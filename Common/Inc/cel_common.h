@@ -8,7 +8,14 @@
 #include <string.h>
 #include <stdint.h>
 #include <math.h>
+
+// Windows / Linux
+#if defined(__unix__) || defined(__unix) || defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #include <time.h>
+// STM32
+#else
+#include "main.h"
+#endif
 
 /**
  * ==================== Boolean ==================== 
