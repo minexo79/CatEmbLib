@@ -1,5 +1,6 @@
 # CatEmbLib
-This library integrates many common and useful functions, and can be used in some C/C++ embedded project (eg: STM32, Raspberry Pi). 
+This library integrates many common and useful functions, and can be used in some C/C++ embedded project. 
+> 2024.9.7 Blackcat: Current Only Support STM32.
 ```
 --{root}                            - Root directory.
     +--Common/                      - Part of common / useful function.
@@ -9,6 +10,31 @@ This library integrates many common and useful functions, and can be used in som
 ## Author
 - Blackcat (minexo79@gmail.com)
 - Triangle_Alien (https://www.facebook.com/MakerGym)
+
+# Contribute Guide
+1. Fork & Clone This Repo.
+2. Add / Modify Your Code. 
+    1. If You Want to Create New File, The Name Must Be Start With `cel_xxx.c/.h`.
+    2. Current Only Support STM32 GCC / Arm Compiler.
+    3. **Only Accept English !!!**
+3. Commit, Push And Create Pull / Request To Me!
+
+## Contribute Example
+- cel_xxx.h
+```c
+#ifndef CEL_XXX_H_
+#define CEL_XXX_H_
+
+// Add Your Code...
+
+#endif /* CEL_XXX_H_ */
+```
+- cel_xxx.c
+```c
+#include "cel_xxx.h"
+
+// Add Your Code...
+```
 
 # License
 ```
