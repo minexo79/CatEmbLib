@@ -8,6 +8,8 @@
  * Reference: 
  * https://hackmd.io/@sysprog/concurrency-ringbuffer
  * https://github.com/AndersKaloer/Ring-Buffer/blob/master/ringbuffer.c
+ * https://hackmd.io/@Aquamay/S1eTd_LcO#%E9%99%A3%E5%88%97%E6%A8%A1%E6%93%AC%E7%92%B0%E5%BD%A2%E4%BD%87%E5%88%97
+ * https://leetcode.com/problems/design-circular-queue
  */
 
 #ifndef CEL_RINGBUF_H
@@ -23,10 +25,10 @@
  * 
  */
 typedef struct ringbuf {
-    uint8_t *buffer;        // Pointer to the buffer
-    int32_t head;           // Head of the buffer
-    int32_t tail;           // Tail of the buffer
-    uint32_t size;          // The buffer Total size
+    uint8_t *buffer;            // Pointer to the buffer
+    uint32_t head;              // Head of the buffer
+    uint32_t tail;              // Tail of the buffer
+    uint32_t size;              // The buffer Total size
 } ringbuf_t;
 
 /**
@@ -82,12 +84,20 @@ int ringbuf_free(ringbuf_t *rb);
  */
 void ringbuf_flush(ringbuf_t *rb);
 
-
 /**
- * @brief delete the ring buffer
+ * @brief Check if the ring buffer is empty
  * 
  * @param rb the ring buffer
+ * @return char 1 if the buffer is empty, 0 if the buffer is not empty
  */
-void ringbuf_delete(ringbuf_t *rb);
+char ringbuf_is_empty(ringbuf_t * rb);
+
+/**
+ * @brief Check if the ring buffer is full
+ * 
+ * @param rb the ring buffer
+ * @return char 1 if the buffer is full, 0 if the buffer is not full
+ */
+char ringbuf_is_full(ringbuf_t * rb);
 
 #endif /* CEL_RINGBUF_H */

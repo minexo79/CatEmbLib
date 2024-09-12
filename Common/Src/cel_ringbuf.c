@@ -8,17 +8,16 @@ char ringbuf_init(ringbuf_t * rb, uint32_t size)
         return -1;
     }
 
-    rb->buffer = (uint8_t *)malloc(size * sizeof(uint8_t));
+    rb->buffer = (uint8_t *)malloc(size + 1 * sizeof(uint8_t));
     if (rb->buffer == NULL)
     {
         // return -1 if the buffer is full or no access to the buffer
-        free(rb);
         return -1;
     }
 
     rb->head = 0;
     rb->tail = 0;
-    rb->size = size;
+    rb->size = size + 1; // add 1 to the size to distinguish between full and empty
 
     // return 0 if the buffer is successfully initialized
     return 0;
@@ -29,12 +28,12 @@ int ringbuf_put(ringbuf_t *rb, uint8_t *data, uint32_t size)
     int put_size = 0;
 
     // check if the buffer is full (tail - head > size)
-    if (rb->tail - rb->head > (int32_t)size)
+    if (ringbuf_is_full(rb))
     {
         return -1;
     }
 
-    for (size_t i = 0 ; i < size; i++)
+    for (size_t i = 0 ; i < size; i++) 
     {
         // if tail is at the end of the buffer, move it to the beginning (mod rb size)
         rb->buffer[(rb->tail + i) % rb->size] = data[i];
@@ -53,7 +52,7 @@ int ringbuf_get(ringbuf_t *rb, uint8_t *data, uint32_t size)
     int get_size = 0;
 
     // check if the buffer is empty (head - tail < size)
-    if (rb->tail - rb->head < (int32_t)size)
+    if (ringbuf_is_empty(rb))
     {
         return -1;
     }
@@ -75,7 +74,7 @@ int ringbuf_get(ringbuf_t *rb, uint8_t *data, uint32_t size)
 int ringbuf_free(ringbuf_t *rb)
 {
     // return the free bytes in the buffer
-    return rb->size - (rb->tail - rb->head);
+    return (rb->tail + rb->size - rb->head) % rb->size;
 }
 
 void ringbuf_flush(ringbuf_t *rb)
@@ -90,10 +89,12 @@ void ringbuf_peek(ringbuf_t *rb, uint8_t *data, uint32_t idx)
     *data = rb->buffer[(rb->head + idx) % rb->size];
 }
 
-void ringbuf_delete(ringbuf_t *rb)
+char ringbuf_is_empty(ringbuf_t * rb) 
 {
-    // free the buffer array
-    free(rb->buffer);
-    // free the ring buffer
-    free(rb);
+    return (rb->tail == rb->head);
+}
+
+char ringbuf_is_full(ringbuf_t * rb) 
+{
+    return (((rb->tail + 1) % rb->size) == rb->head);
 }
