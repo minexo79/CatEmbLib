@@ -1,3 +1,13 @@
+/**
+ * @file cel_log.h
+ * @author blackcat
+ * @brief Log Library
+ * @version 0.1
+ * @date 2024-09-12
+ * 
+ * Reference:
+ */
+
 #ifndef CEL_LOG_H_
 #define CEL_LOG_H_
 

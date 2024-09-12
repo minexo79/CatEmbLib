@@ -1,7 +1,16 @@
+/**
+ * @file cel_common.h
+ * @author blackcat
+ * @brief Common Marco Library
+ * @version 0.1
+ * @date 2024-09-12
+ * 
+ * Reference: 
+ * https://github.com/arduino/ArduinoCore-avr/blob/master/cores/arduino/Arduino.h
+ */
+
 #ifndef CEL_COMMON_H_
 #define CEL_COMMON_H_
-
-// Reference: https://github.com/arduino/ArduinoCore-avr/blob/master/cores/arduino/Arduino.h
 
 #include <stdio.h>
 #include <stdlib.h>

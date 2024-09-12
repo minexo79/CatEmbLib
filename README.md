@@ -3,13 +3,21 @@ This library integrates many common and useful functions, and can be used in som
 > 2024.9.7 Blackcat: Current Only Support STM32.
 ```
 --{root}                            - Root directory.
-    +--Common/                      - Part of common / useful function.
+    +--Common/                      - Part of common / useful functions.
+    +--Example/                     - Test for some functions.
+    +--.gitignore                   - The file can be ignored Bby git.
+    +--LICENSE                      - MIT License for repo.
     +--README.md                    - This file.
 ```
 
 ## Author
 - Blackcat (minexo79@gmail.com)
 - Triangle_Alien (https://www.facebook.com/MakerGym)
+
+# Features
+- Common Marco (References By [Arduino](https://github.com/arduino/ArduinoCore-avr/blob/master/cores/arduino/Arduino.h))
+- Logging
+- Ring Buffer / Circular Buffer
 
 # Contribute Guide
 1. Fork & Clone This Repo.
