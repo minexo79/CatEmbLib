@@ -23,51 +23,65 @@ char ringbuf_init(ringbuf_t * rb, uint32_t size)
     return 0;
 }
 
-int ringbuf_put(ringbuf_t *rb, uint8_t *data, uint32_t size)
-{
-    int put_size = 0;
 
+int ringbuf_put(ringbuf_t *rb, uint8_t *data)
+{
     // check if the buffer is full (tail - head > size)
     if (ringbuf_is_full(rb))
     {
         return -1;
     }
 
-    for (size_t i = 0 ; i < size; i++) 
+    rb->tail = (rb->tail + 1) % rb->size;
+    rb->buffer[rb->tail] = *data;
+
+    // return 0 if the data is inserted
+    return 0;
+}
+
+int ringbuf_put_array(ringbuf_t *rb, uint8_t *data, uint32_t size)
+{
+    uint32_t put_size = 0;
+    
+    for (size_t i = 0; i < size; i++) 
     {
-        // if tail is at the end of the buffer, move it to the beginning (mod rb size)
-        rb->buffer[(rb->tail + i) % rb->size] = data[i];
+        if (ringbuf_put(rb, &data[i]) < 0)
+            break;
+
         put_size++;
     }
-
-    // update the tail
-    rb->tail = (rb->tail + size) % rb->size;
-
-    // return the number of bytes inserted
+    
     return put_size;
 }
 
-int ringbuf_get(ringbuf_t *rb, uint8_t *data, uint32_t size)
+int ringbuf_get(ringbuf_t *rb, uint8_t *data)
 {
-    int get_size = 0;
-
     // check if the buffer is empty (head - tail < size)
     if (ringbuf_is_empty(rb))
     {
         return -1;
     }
 
-    for (size_t i = 0; i < size; i++)
+    // update the head
+    rb->head = (rb->head + 1) % rb->size;
+    *data = rb->buffer[rb->head];
+
+    // return 0 if the data is extracted
+    return 0;
+}
+
+int ringbuf_get_array(ringbuf_t *rb, uint8_t *data, uint32_t size)
+{
+    uint32_t get_size = 0;
+
+    for (size_t i = 0; i < size; i++) 
     {
-        // if head is at the end of the buffer, move it to the beginning (mod rb size)
-        data[i] = rb->buffer[(rb->head + i) % rb->size];
+        if (ringbuf_get(rb, &data[i]) < 0)
+            break;
+
         get_size++;
     }
-
-    // update the head
-    rb->head = (rb->head + size) % rb->size;
-
-    // return the number of bytes extracted
+    
     return get_size;
 }
 

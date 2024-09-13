@@ -2,8 +2,11 @@
  * @file cel_ringbuf.h
  * @author blackcat
  * @brief Ring buffer Library
- * @version 0.1
+ * @version 0.2
  * @date 2024-09-12
+ *
+ * Update:
+ * 0.2 (20240913): Split Put / Get Array & One Byte To Different Operation
  * 
  * Reference: 
  * https://hackmd.io/@sysprog/concurrency-ringbuffer
@@ -41,24 +44,43 @@ typedef struct ringbuf {
 char ringbuf_init(ringbuf_t * rb, uint32_t size);
 
 /**
- * @brief insert data into the ring buffer 
+ * @brief insert one data into the ring buffer 
  * 
  * @param rb the ring buffer
  * @param data the data to be inserted
  * @param size the size of the data to be inserted
- * @return int the number of bytes inserted, -1 if the buffer is full or no access to the buffer
+ * @return return -1 if the buffer is full or no access to the, otherwise return 0.
  */
-int ringbuf_put(ringbuf_t *rb, uint8_t *data, uint32_t size);
+int ringbuf_put(ringbuf_t *rb, uint8_t *data);
 
 /**
- * @brief extracted data from the ring buffer
+ * @brief insert array data into the ring buffer 
+ * 
+ * @param rb the ring buffer
+ * @param data the data to be inserted
+ * @param size the size of the data to be inserted
+ * @return int the number of bytes inserted, 0 if the buffer is full or no access to the buffer
+ */
+int ringbuf_put_array(ringbuf_t *rb, uint8_t *data, uint32_t size);
+
+/**
+ * @brief extracted one data from the ring buffer
+ * 
+ * @param rb the ring buffer
+ * @param data the data to be inserted
+ * @return return -1 if the buffer is empty or no access to the buffer, otherwise return 0.
+ */
+int ringbuf_get(ringbuf_t *rb, uint8_t *data);
+
+/**
+ * @brief extracted array data from the ring buffer
  * 
  * @param rb the ring buffer
  * @param data the data to be inserted
  * @param size the size of the data to be extracted
- * @return int the number of bytes inserted, -1 if the buffer is empty or no access to the buffer
+ * @return int the number of bytes inserted, 0 if the buffer is empty or no access to the buffer
  */
-int ringbuf_get(ringbuf_t *rb, uint8_t *data, uint32_t size);
+int ringbuf_get_array(ringbuf_t *rb, uint8_t *data, uint32_t size);
 
 /**
  * @brief peek one data from the ring buffer
