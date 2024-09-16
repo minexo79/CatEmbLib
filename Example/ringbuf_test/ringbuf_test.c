@@ -10,13 +10,13 @@ static uint8_t put_data[] = "CatEmbLib!!";
 void print_buffer(ringbuf_t *rb)
 {
     printf("----------------------\n");
-    printf("Ring buffer head: %d\n", rb->head);             // head
-    printf("Ring buffer tail: %d\n", rb->tail);             // tail
-    printf("Ring buffer free: %d\n", ringbuf_free(rb));     // free size
+    printf("Ring buffer head: %d\n", rb->head);         // head
+    printf("Ring buffer tail: %d\n", rb->tail);         // tail
+    printf("Ring buffer free: %d\n", ringbuf_free(rb)); // free size
     printf("----------------------\n");
 }
 
-void put(uint8_t * data, uint32_t size)
+void put(uint8_t *data, uint32_t size)
 {
     ringbuf_put_array(&ringbuf, data, size - 1);
     printf("Put data: %s\n", data);
@@ -28,9 +28,9 @@ void get()
 
     ringbuf_get_array(&ringbuf, get_data, sizeof(get_data) - 1);
     printf("Get data: %s\n", get_data);
-}   
+}
 
-int main (void)
+int main(void)
 {
     // initialize the ring buffer
     ringbuf_init(&ringbuf, 24);
@@ -61,6 +61,8 @@ int main (void)
     ringbuf_flush(&ringbuf);
     printf("Flush the ring buffer\n");
     print_buffer(&ringbuf);
+
+    ringbuf_destroy(&ringbuf);
 
     return 0;
 }

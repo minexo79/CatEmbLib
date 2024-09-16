@@ -1,6 +1,6 @@
 #include "cel_ringbuf.h"
 
-char ringbuf_init(ringbuf_t * rb, uint32_t size)
+char ringbuf_init(ringbuf_t *rb, uint32_t size)
 {
     if (rb == NULL)
     {
@@ -23,7 +23,6 @@ char ringbuf_init(ringbuf_t * rb, uint32_t size)
     return 0;
 }
 
-
 int ringbuf_put(ringbuf_t *rb, uint8_t *data)
 {
     // check if the buffer is full (tail - head > size)
@@ -42,15 +41,15 @@ int ringbuf_put(ringbuf_t *rb, uint8_t *data)
 int ringbuf_put_array(ringbuf_t *rb, uint8_t *data, uint32_t size)
 {
     uint32_t put_size = 0;
-    
-    for (size_t i = 0; i < size; i++) 
+
+    for (size_t i = 0; i < size; i++)
     {
         if (ringbuf_put(rb, &data[i]) < 0)
             break;
 
         put_size++;
     }
-    
+
     return put_size;
 }
 
@@ -74,14 +73,14 @@ int ringbuf_get_array(ringbuf_t *rb, uint8_t *data, uint32_t size)
 {
     uint32_t get_size = 0;
 
-    for (size_t i = 0; i < size; i++) 
+    for (size_t i = 0; i < size; i++)
     {
         if (ringbuf_get(rb, &data[i]) < 0)
             break;
 
         get_size++;
     }
-    
+
     return get_size;
 }
 
@@ -103,12 +102,18 @@ void ringbuf_peek(ringbuf_t *rb, uint8_t *data, uint32_t idx)
     *data = rb->buffer[(rb->head + idx) % rb->size];
 }
 
-char ringbuf_is_empty(ringbuf_t * rb) 
+char ringbuf_is_empty(ringbuf_t *rb)
 {
     return (rb->tail == rb->head);
 }
 
-char ringbuf_is_full(ringbuf_t * rb) 
+char ringbuf_is_full(ringbuf_t *rb)
 {
     return (((rb->tail + 1) % rb->size) == rb->head);
+}
+void ringbuf_destroy(ringbuf_t *rb)
+{
+    // Destroy the ring buffer
+    free(rb->buffer);
+    printf("Ring buffer destroyed\n");
 }
