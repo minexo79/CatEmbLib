@@ -28,6 +28,10 @@
 // STM32
 #else
 #include "main.h"
+
+#define PRINTF_UART  huart1     // only for printf used!!
+// #define PRINTF_UART  huart2
+// #define PRINTF_UART  huart3
 #endif
 
 /**
@@ -77,5 +81,23 @@
  */
 
 #define array_size(x) (sizeof(x) / sizeof((x)[0]))
+
+/**
+ * ==================== Printf ==================== 
+ */
+#if defined(PRINTF_UART)
+
+#ifdef __GNUC__
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
+
+PUTCHAR_PROTOTYPE
+{
+    HAL_UART_Transmit(&PRINTF_UART, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+    return ch;
+}
+#endif
 
 #endif /* CEL_COMMON_H_ */
